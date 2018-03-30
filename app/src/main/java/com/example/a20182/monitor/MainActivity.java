@@ -22,33 +22,32 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private AppAdapter mAdapter;
     private List<Application> mApps;
     public static List<Application> AppList = new ArrayList<Application>();
-/*
-    Timer timer=new Timer();
-    TimerTask task=new TimerTask() {
+
+    Timer timer1=new Timer();
+    final TimerTask task1 = new TimerTask() {
         @Override
         public void run() {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    startActivity(new Intent(MainActivity.this, MainActivity.class));
+                    mListView.setAdapter(mAdapter);
                 }
             });
         }
     };
-*/
+
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         mListView = (ListView) findViewById(R.id.lv_monitor);
         mListView.setOnItemClickListener(this);
-        if(AppList.isEmpty()){loadAppInfomation(this);}
+        if (AppList.isEmpty()) {
+            loadAppInfomation(this);
+        }
         mApps = getSelectList(AppList);
         mAdapter = new AppAdapter(this, mApps);
-        mListView.setAdapter(mAdapter);
-
-        //timer.schedule(task,100,1000);
+        timer1.schedule(task1,0,1000);
     }
 
     private void loadAppInfomation(Context context) {
@@ -99,9 +98,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 });
             }
         };
-        timer.schedule(task,100,1000);
+        timer.schedule(task,0,1000);
 
     }
+
 
     public void btnAdd(View view){
         startActivity(new Intent(MainActivity.this, Select.class));

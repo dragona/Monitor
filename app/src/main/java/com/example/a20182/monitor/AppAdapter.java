@@ -3,6 +3,7 @@ package com.example.a20182.monitor;
 /**
  * Created by 20182 on 2018/3/30.
  */
+import java.text.SimpleDateFormat;
 import java.util.List;
 import android.content.Context;
 import android.os.SystemClock;
@@ -17,7 +18,7 @@ import android.widget.TextView;
 public class AppAdapter extends BaseAdapter {
     private List<Application> apps;
     private LayoutInflater inflater;
-
+    private SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
     public AppAdapter (Context context, List<Application> infos) {
         this.apps = infos;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -54,7 +55,7 @@ public class AppAdapter extends BaseAdapter {
         }
         holder.icon.setImageDrawable(apps.get(position).getIcon());
         holder.name.setText(apps.get(position).getName());
-        holder.runtime.setText(String.valueOf(apps.get(position).getRuntime()));
+        holder.runtime.setText("    runtime:"+String.valueOf(formatter.format(apps.get(position).getRuntime()*1000)));
         //holder.runtime.setBase(SystemClock.elapsedRealtime()-apps.get(position).getRuntime()*1000);
 
         return convertView;
