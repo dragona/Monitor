@@ -13,6 +13,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class WindowChangeDetectingService extends AccessibilityService {
+
     public static int position = -1;
 
     final Timer timer = new Timer();
@@ -68,6 +69,7 @@ public class WindowChangeDetectingService extends AccessibilityService {
                     else if(i == MainActivity.mApps.size()-1){
                         position = -1;
                     }
+
 
                 }
             }

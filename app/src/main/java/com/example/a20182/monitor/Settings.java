@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +20,6 @@ public class Settings extends AppCompatActivity {
 
         TextView appName = (TextView)findViewById(R.id.tv_appName);
         appName.setText(curset.getName()+"  Settings");
-
     }
 
     public void btnConfirm(View view){

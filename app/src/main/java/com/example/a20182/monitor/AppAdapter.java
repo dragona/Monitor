@@ -5,6 +5,7 @@ package com.example.a20182.monitor;
  */
 
 
+
 import java.util.List;
 
 import android.content.Context;
@@ -62,6 +63,7 @@ public class AppAdapter extends BaseAdapter {
         holder.maxtime.setText("  max:" + toTime(apps.get(position).getLimiTime()));
 
         Button btn=convertView.findViewById(R.id.btn_del);
+
         btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){

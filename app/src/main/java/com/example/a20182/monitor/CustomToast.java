@@ -28,6 +28,7 @@ public class CustomToast {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         int height = wm.getDefaultDisplay().getHeight();
         //Toast.Y = screen.height*1/3
+
         toastStart.setGravity(Gravity.TOP, 0, height / 3);
         toastStart.setDuration(Toast.LENGTH_LONG);
         toastStart.setView(toastRoot);

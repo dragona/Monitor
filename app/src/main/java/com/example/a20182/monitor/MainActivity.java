@@ -8,9 +8,11 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.AdapterView;
+
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.provider.Settings;
@@ -113,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemClick (AdapterView<?> parent, View view, int position, long id) {
+
     }
 
     public void btnAdd(View view){
