@@ -10,25 +10,53 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:textAlignment="center"
         android:text="APP LIST"
-        android:textSize="20dp"/>
+        android:textSize="20dp" />
 
     <ListView
         android:id="@+id/lv_monitor"
         android:layout_width="match_parent"
-        android:layout_height="412dp" />
+        android:layout_height="410dp" />
 
-    <ImageView
-        android:id="@+id/imageView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="btnAdd"
-        app:srcCompat="@drawable/add" />
+        android:orientation="horizontal">
 
+        <ImageView
+            android:id="@+id/iv_add"
+            android:layout_width="95dp"
+            android:layout_height="wrap_content"
+            android:onClick="btnAdd"
+            app:srcCompat="@drawable/add" />
+
+        <ImageView
+            android:id="@+id/iv_renew"
+            android:layout_width="95dp"
+            android:layout_height="wrap_content"
+            android:onClick="btnRenew"
+            android:src="@drawable/renew_selector" />
+
+        <ImageView
+            android:id="@+id/iv_auto"
+            android:layout_width="95dp"
+            android:layout_height="wrap_content"
+            android:onClick="btnAuto"
+            android:src="@drawable/auto" />
+
+        <ImageView
+            android:id="@+id/iv_timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="btnTimer"
+            android:src="@drawable/timer" />
+
+    </LinearLayout>
 
 </LinearLayout>
