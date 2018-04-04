@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.Message;
 
+import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.Toast;
 
@@ -24,12 +25,12 @@ public class WindowChangeDetectingService extends AccessibilityService {
                 if (MainActivity.mApps.get(position).getIsRun()) {
                     MainActivity.mApps.get(position).setRuntime(MainActivity.mApps.get(position).getRuntime() + 1);
 
-                    if(MainActivity.flags_timer&&MainActivity.mApps.get(position).getRuntime()%10==0){handler_timer.sendEmptyMessage(0);}
+                    if(SpinnerAdapter.flags_timer&&MainActivity.mApps.get(position).getRuntime()%10==0){handler_timer.sendEmptyMessage(0);}
                     if (MainActivity.mApps.get(position).getRuntime() >= MainActivity.mApps.get(position).getLimiTime()
                             && MainActivity.mApps.get(position).getLimiTime() != 0) {
                         handler.sendEmptyMessage(0);
                         MainActivity.mApps.get(position).setIsRun(false);
-                        if(MainActivity.flags_auto){MainActivity.mApps.get(position).setRuntime(0);}
+                        if(SpinnerAdapter.flags_auto){MainActivity.mApps.get(position).setRuntime(0);}
                     }
                 }
             }
@@ -56,19 +57,20 @@ public class WindowChangeDetectingService extends AccessibilityService {
             ActivityInfo activityInfo = tryGetActivity(componentName);
             boolean isActivity = activityInfo != null;
             if (isActivity) {
-                for (int i = 0; i < MainActivity.mApps.size(); i++) {
-                    if (componentName.getPackageName().contains("monitor")) {
-                        MainActivity.mApps.get(i).setIsRun(false);
-                    } 
-					else if (MainActivity.mApps.get(i).getIntent().getPackageName().equals(componentName.getPackageName())){
-						MainActivity.mApps.get(i).setIsRun(true);
-						position = i;
+                try {
+                    for (int i = 0; i < MainActivity.mApps.size(); i++) {
+                        if (componentName.getPackageName().contains("monitor")) {
+                            MainActivity.mApps.get(i).setIsRun(false);
+                        } else if (MainActivity.mApps.get(i).getIntent().getPackageName().equals(componentName.getPackageName())) {
+                            MainActivity.mApps.get(i).setIsRun(true);
+                            position = i;
 
-                    }else if(i==MainActivity.mApps.size()-1){
-						position = -1;
-					}
+                        } else if (i == MainActivity.mApps.size() - 1) {
+                            position = -1;
+                        }
 
-                }
+                    }
+                }catch (NullPointerException e){}
             }
 
         }

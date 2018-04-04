@@ -8,12 +8,10 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
-import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.provider.Settings;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,15 +19,18 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class MainActivity extends AppCompatActivity{
 
     private ListView mListView;
     private AppAdapter mAdapter;
+    private int[] mToolicon = {R.drawable.add,R.drawable.renew,R.drawable.auto,R.drawable.timer};
     public static List<Application> mApps;
     public static List<Application> AppList = new ArrayList<Application>();
-    public static boolean flags_auto = false;
-    public static boolean flags_timer = false;
     public static boolean flags_refresh = false;
+
+    private Spinner spinner;
+    private SpinnerAdapter SpAdapter;
+
 
     Timer timer0=new Timer();
     final TimerTask task0 = new TimerTask() {
@@ -42,6 +43,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     if(flags_refresh) {
                         startActivity(new Intent(MainActivity.this, MainActivity.class));
                         flags_refresh = false;
+                    }
+
+                    switch (SpinnerAdapter.flags_position){
+                        case 0:
+                            startActivity(new Intent(MainActivity.this, Select.class));
+                            SpinnerAdapter.flags_position = -1;
+                            break;
+                        case 1:
+                            for(int i=0;i<mApps.size();i++) {
+                                mApps.get(i).setRuntime(0);
+                                mApps.get(i).setIsRun(false);
+                            }
+                            mListView.setAdapter(mAdapter);
+                            SpinnerAdapter.flags_position = -1;
+                            break;
                     }
                 }
             });
@@ -69,13 +85,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
         mListView = (ListView) findViewById(R.id.lv_monitor);
-        mListView.setOnItemClickListener(this);
         if (AppList.isEmpty()) {
             loadAppInfomation(this);
         }
         mApps = getSelectList(AppList);
         mAdapter = new AppAdapter(this, mApps);
         timer0.schedule(task0,0,1000);
+
+        spinner = (Spinner) findViewById(R.id.sp_tool);
+        SpAdapter=new SpinnerAdapter(this, mToolicon);
+        spinner.setAdapter(SpAdapter);
 
     }
 
@@ -112,42 +131,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return selectList;
     }
 
-    @Override
-    public void onItemClick (AdapterView<?> parent, View view, int position, long id) {
-    }
-
-    public void btnAdd(View view){
-        startActivity(new Intent(MainActivity.this, Select.class));
-    }
-
-    public void btnRenew(View view){
-        for(int i=0;i<mApps.size();i++) {
-            mApps.get(i).setRuntime(0);
-            mApps.get(i).setIsRun(false);
-        }
-        mListView.setAdapter(mAdapter);
-    }
-
-    public void btnAuto(View view){
-        flags_auto = !flags_auto;
-        ImageView iv_Auto = findViewById(R.id.iv_auto);
-        if(!flags_auto) {
-             iv_Auto.setImageResource(R.drawable.auto);
-        }else
-        {
-            iv_Auto.setImageResource(R.drawable.auto_press);
-        }
-    }
-
-    public void btnTimer(View view){
-        flags_timer = !flags_timer;
-        ImageView iv_Auto = findViewById(R.id.iv_timer);
-        if(!flags_timer) {
-            iv_Auto.setImageResource(R.drawable.timer);
-        }else
-        {
-            iv_Auto.setImageResource(R.drawable.timer_press);
-        }
+    public void btnSpinner(View view){
+        spinner.performClick();
     }
 }
 

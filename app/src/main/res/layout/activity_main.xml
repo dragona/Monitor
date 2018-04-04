@@ -22,41 +22,25 @@
     <ListView
         android:id="@+id/lv_monitor"
         android:layout_width="match_parent"
-        android:layout_height="410dp" />
+        android:layout_height="match_parent" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+    <Spinner
+        android:id="@+id/sp_tool"
+        android:layout_width="38dp"
+        android:layout_height="35dp"
+        android:layout_gravity="right"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="-80dp"
+        android:overlapAnchor="false" />
 
-        <ImageView
-            android:id="@+id/iv_add"
-            android:layout_width="95dp"
-            android:layout_height="wrap_content"
-            android:onClick="btnAdd"
-            app:srcCompat="@drawable/add" />
-
-        <ImageView
-            android:id="@+id/iv_renew"
-            android:layout_width="95dp"
-            android:layout_height="wrap_content"
-            android:onClick="btnRenew"
-            android:src="@drawable/renew_selector" />
-
-        <ImageView
-            android:id="@+id/iv_auto"
-            android:layout_width="95dp"
-            android:layout_height="wrap_content"
-            android:onClick="btnAuto"
-            android:src="@drawable/auto" />
-
-        <ImageView
-            android:id="@+id/iv_timer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="btnTimer"
-            android:src="@drawable/timer" />
-
-    </LinearLayout>
+    <ImageView
+        android:id="@+id/iv_spinner"
+        android:layout_width="38dp"
+        android:layout_height="35dp"
+        android:layout_gravity="right"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="-35dp"
+        android:onClick="btnSpinner"
+        app:srcCompat="@drawable/menu" />
 
 </LinearLayout>
