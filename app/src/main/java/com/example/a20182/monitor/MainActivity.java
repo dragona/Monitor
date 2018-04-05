@@ -6,13 +6,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.provider.Settings;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import static android.content.ContentValues.TAG;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,6 +36,9 @@ public class MainActivity extends AppCompatActivity{
     private int[] mToolicon = {R.drawable.add,R.drawable.renew,R.drawable.auto,R.drawable.timer};
     public static List<Application> mApps;
     public static List<Application> AppList = new ArrayList<Application>();
+
+    public static List<StoreInfo> pStoreInfo = new ArrayList<StoreInfo>();
+
     public static boolean flags_refresh = false;
 
     private Spinner spinner;
@@ -59,6 +72,8 @@ public class MainActivity extends AppCompatActivity{
                             SpinnerAdapter.flags_position = -1;
                             break;
                     }
+
+                    if(!AppList.isEmpty())storageData();
                 }
             });
         }
@@ -77,7 +92,6 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         if(!isStartAccessibilityService(this,"monitor"))
         {
              Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
@@ -85,9 +99,16 @@ public class MainActivity extends AppCompatActivity{
         }
 
         mListView = (ListView) findViewById(R.id.lv_monitor);
-        if (AppList.isEmpty()) {
-            loadAppInfomation(this);
+
+        if(AppList.isEmpty())loadAppInfomation(this);
+
+        readData();
+
+        if(!pStoreInfo.isEmpty()) {
+            AppList = infoToApp(pStoreInfo);
+            Log.i(this.getClass().getName(), "init-state："+AppList.get(0).getIntent().getPackageName());
         }
+
         mApps = getSelectList(AppList);
         mAdapter = new AppAdapter(this, mApps);
         timer0.schedule(task0,0,1000);
@@ -107,13 +128,10 @@ public class MainActivity extends AppCompatActivity{
         if(infos != null) {
             AppList.clear();
             for(int i=0; i<infos.size(); i++) {
-                Application app = new Application();
                 ResolveInfo info = infos.get(i);
-                app.setName(info.loadLabel(pm).toString());
-                app.setIcon(info.loadIcon(pm));
-                app.setIntent(new ComponentName(info.activityInfo.packageName, info.activityInfo.name));
-                app.setRuntime(0);
-                app.setSelected(false);
+                Application app = new Application(info.loadLabel(pm).toString(),info.loadIcon(pm),
+                        new ComponentName(info.activityInfo.packageName, info.activityInfo.name),
+                        false,0,0,"",false);
                 AppList.add(app);
             }
         }
@@ -131,8 +149,91 @@ public class MainActivity extends AppCompatActivity{
         return selectList;
     }
 
+    private List<StoreInfo> appToInfo(List<Application> AppList){
+        pStoreInfo.clear();
+        for(int i=0;i<AppList.size();i++)
+        {
+            StoreInfo info = new StoreInfo(AppList.get(i).getName(),
+                    AppList.get(i).getIsRun(),
+                    AppList.get(i).getRuntime(),
+                    AppList.get(i).getLimiTime(),
+                    AppList.get(i).getTips(),
+                    AppList.get(i).getSelected());
+            pStoreInfo.add(info);
+        }
+        return pStoreInfo;
+    }
+
+    private List<Application> infoToApp(List<StoreInfo> StoreInfo){
+        for(int i=0;i<AppList.size();i++)
+        {
+            AppList.get(i).setIsRun(StoreInfo.get(i).getIsRun());
+            AppList.get(i).setRuntime(StoreInfo.get(i).getRuntime());
+            AppList.get(i).setLimiTime(StoreInfo.get(i).getLimiTime());
+            AppList.get(i).setTips(StoreInfo.get(i).getTips());
+            AppList.get(i).setSelected(StoreInfo.get(i).getSelected());
+        }
+        return AppList;
+    }
+
+    public void storageData(){
+        FileOutputStream fos = null;
+        pStoreInfo = appToInfo(AppList);
+        try {
+            fos=openFileOutput("application.txt", Context.MODE_PRIVATE);
+            Gson gson = new Gson();
+            String jsonstr = gson.toJson(pStoreInfo);
+            fos.write(jsonstr.getBytes());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void readData(){
+
+        FileInputStream fis=null;
+        try {
+            Gson gson = new Gson();
+            fis=openFileInput("application.txt");
+            byte[] outByte=new byte[fis.available()];
+            fis.read(outByte);
+            if(!new String(outByte).equals("[]")&&!new String(outByte).equals("")){
+                pStoreInfo = gson.fromJson(new String(outByte), new TypeToken<List<StoreInfo>>(){}.getType());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void btnSpinner(View view){
         spinner.performClick();
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+
+        storageData();
+    }
+
+    @Override
+    public  void finish() {
+        super.finish();
+        if(isTaskRoot()){
+            storageData();
+        }
     }
 }
 

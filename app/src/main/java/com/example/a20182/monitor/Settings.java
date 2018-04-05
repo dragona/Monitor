@@ -1,13 +1,18 @@
 package com.example.a20182.monitor;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.gson.Gson;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Settings extends AppCompatActivity {
 
@@ -48,7 +53,44 @@ public class Settings extends AppCompatActivity {
             MainActivity.AppList.get(Select.curPosition).setTips(TipsText.getText().toString());
             MainActivity.AppList.get(Select.curPosition).setRuntime(0);
 
+            storageData();
             startActivity(new Intent(Settings.this, MainActivity.class));
+
         }
     }
+
+    public void storageData(){
+        FileOutputStream fos = null;
+        MainActivity.pStoreInfo = appToInfo(MainActivity.AppList);
+        try {
+            fos=openFileOutput("application.txt", Context.MODE_PRIVATE);
+            Gson gson = new Gson();
+            String jsonstr = gson.toJson(MainActivity.pStoreInfo);
+            fos.write(jsonstr.getBytes());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private List<StoreInfo> appToInfo(List<Application> AppList){
+        MainActivity.pStoreInfo.clear();
+        for(int i=0;i<AppList.size();i++)
+        {
+            StoreInfo info = new StoreInfo(AppList.get(i).getName(),
+                    AppList.get(i).getIsRun(),
+                    AppList.get(i).getRuntime(),
+                    AppList.get(i).getLimiTime(),
+                    AppList.get(i).getTips(),
+                    AppList.get(i).getSelected());
+            MainActivity.pStoreInfo.add(info);
+        }
+        return MainActivity.pStoreInfo;
+    }
+
 }

@@ -74,7 +74,6 @@ public class AppAdapter extends BaseAdapter {
                         WindowChangeDetectingService.position = -1;
                     }
                 }
-
             }
         });
 

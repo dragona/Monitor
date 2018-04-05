@@ -1,16 +1,7 @@
 package com.example.a20182.monitor;
 
-import android.content.ComponentName;
-import android.graphics.drawable.Drawable;
-
-/**
- * Created by 20182 on 2018/3/30.
- */
-
-public class Application {
+public class StoreInfo {
     private String name;
-    private Drawable icon;
-    private ComponentName intent;
     private boolean isRun;
     private int runtime;
     private int limitime;
@@ -18,14 +9,12 @@ public class Application {
     private boolean isSelected;
 
     //无参构造函数
-    public Application(){}
+    public StoreInfo(){}
 
     //有参构造函数
-    public Application(String name,Drawable icon,ComponentName intent,boolean isRun,
-                       int runtime,int limitime,String tips,boolean isSelected){
+    public StoreInfo(String name, boolean isRun,
+                       int runtime, int limitime, String tips, boolean isSelected){
         this.name = name;
-        this.icon = icon;
-        this.intent = intent;
         this.isRun = isRun;
         this.runtime = runtime;
         this.limitime = limitime;
@@ -39,22 +28,6 @@ public class Application {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Drawable getIcon() {
-        return icon;
-    }
-
-    public void setIcon(Drawable icon) {
-        this.icon = icon;
-    }
-
-    public ComponentName getIntent () {
-        return intent;
-    }
-
-    public void setIntent (ComponentName intent) {
-        this.intent = intent;
     }
 
     public int getLimiTime() {
