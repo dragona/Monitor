@@ -54,7 +54,8 @@ public class Settings extends AppCompatActivity {
             MainActivity.AppList.get(Select.curPosition).setRuntime(0);
 
             storageData();
-            startActivity(new Intent(Settings.this, MainActivity.class));
+            startActivity(new Intent(Settings.this, MainActivity.class)
+                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
 
         }
     }

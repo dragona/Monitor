@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,11 +17,9 @@ import android.provider.Settings;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import static android.content.ContentValues.TAG;
-
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -54,7 +51,8 @@ public class MainActivity extends AppCompatActivity{
                 public void run() {
                     mListView.setAdapter(mAdapter);
                     if(flags_refresh) {
-                        startActivity(new Intent(MainActivity.this, MainActivity.class));
+                        startActivity(new Intent(MainActivity.this, MainActivity.class)
+                                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                         flags_refresh = false;
                     }
 
@@ -78,45 +76,42 @@ public class MainActivity extends AppCompatActivity{
             });
         }
     };
+
     public static boolean isStartAccessibilityService(Context context, String name){
         AccessibilityManager am = (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
         List<AccessibilityServiceInfo> serviceInfos = am.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_GENERIC);
         for (AccessibilityServiceInfo info : serviceInfos)
-        { ;
+        {
             if (info.getId().contains(name)) {
                 return true;
             }
         } return false;
     }
+
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if(!isStartAccessibilityService(this,"monitor"))
+        if(!isStartAccessibilityService(this,"monitor")&&AppList.isEmpty())
         {
              Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
              startActivity(intent);
         }
 
-        mListView = (ListView) findViewById(R.id.lv_monitor);
+        mListView = findViewById(R.id.lv_monitor);
 
-        if(AppList.isEmpty())loadAppInfomation(this);
+        if(AppList.isEmpty()) loadAppInfomation(this);
 
         readData();
-
-        if(!pStoreInfo.isEmpty()) {
-            AppList = infoToApp(pStoreInfo);
-            Log.i(this.getClass().getName(), "init-state："+AppList.get(0).getIntent().getPackageName());
-        }
+        if(!pStoreInfo.isEmpty()) AppList = infoToApp(pStoreInfo);
 
         mApps = getSelectList(AppList);
         mAdapter = new AppAdapter(this, mApps);
         timer0.schedule(task0,0,1000);
 
-        spinner = (Spinner) findViewById(R.id.sp_tool);
+        spinner = findViewById(R.id.sp_tool);
         SpAdapter=new SpinnerAdapter(this, mToolicon);
         spinner.setAdapter(SpAdapter);
-
     }
 
     private void loadAppInfomation(Context context) {
@@ -184,19 +179,16 @@ public class MainActivity extends AppCompatActivity{
             Gson gson = new Gson();
             String jsonstr = gson.toJson(pStoreInfo);
             fos.write(jsonstr.getBytes());
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            try {
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
     public void readData(){
-
         FileInputStream fis=null;
         try {
             Gson gson = new Gson();
@@ -206,14 +198,11 @@ public class MainActivity extends AppCompatActivity{
             if(!new String(outByte).equals("[]")&&!new String(outByte).equals("")){
                 pStoreInfo = gson.fromJson(new String(outByte), new TypeToken<List<StoreInfo>>(){}.getType());
             }
+            fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            try {
-                fis.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -229,7 +218,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     @Override
-    public  void finish() {
+    public void finish() {
         super.finish();
         if(isTaskRoot()){
             storageData();
