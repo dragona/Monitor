@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.a20182.monitor">
-<<<<<<< HEAD
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-||||||| merged common ancestors
-
-=======
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
->>>>>>> ed7c5d6e212519d079f653b9d91edc549bd514c4
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,7 +10,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-<<<<<<< HEAD
         <service
             android:name=".WindowChangeDetectingService"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
@@ -28,19 +21,6 @@
                 android:resource="@xml/accessibilityservice" />
         </service>
 
-||||||| merged common ancestors
-=======
-        <service
-            android:name=".WindowChangeDetectingService"
-            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
-            <intent-filter>
-                <action android:name="android.accessibilityservice.AccessibilityService" />
-            </intent-filter>
-            <meta-data
-                android:name="android.accessibilityservice"
-                android:resource="@xml/accessibilityservice" />
-        </service>
->>>>>>> ed7c5d6e212519d079f653b9d91edc549bd514c4
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -49,7 +29,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Settings" />
-        <activity android:name=".Select"/>
+        <activity android:name=".Select" />
     </application>
 
 </manifest>

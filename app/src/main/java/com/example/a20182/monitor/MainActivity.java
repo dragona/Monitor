@@ -10,25 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-<<<<<<< HEAD
 import android.view.accessibility.AccessibilityManager;
-import android.widget.AdapterView;
-import android.widget.ImageView;
-||||||| merged common ancestors
-import android.widget.AdapterView;
-=======
-import android.view.accessibility.AccessibilityManager;
->>>>>>> ed7c5d6e212519d079f653b9d91edc549bd514c4
 import android.widget.ListView;
-<<<<<<< HEAD
-import android.provider.Settings;
-||||||| merged common ancestors
-=======
 import android.widget.Spinner;
 import android.provider.Settings;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
->>>>>>> ed7c5d6e212519d079f653b9d91edc549bd514c4
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -43,26 +30,10 @@ public class MainActivity extends AppCompatActivity{
 
     private ListView mListView;
     private AppAdapter mAdapter;
-<<<<<<< HEAD
-    public static List<Application> mApps;
-||||||| merged common ancestors
-    private List<Application> mApps;
-=======
     private int[] mToolicon = {R.drawable.add,R.drawable.renew,R.drawable.auto,R.drawable.timer};
     public static List<Application> mApps;
->>>>>>> ed7c5d6e212519d079f653b9d91edc549bd514c4
     public static List<Application> AppList = new ArrayList<Application>();
-    public static boolean flags_auto = false;
-    public static boolean flags_timer = false;
-    public static boolean flags_refresh = false;
 
-<<<<<<< HEAD
-    Timer timer0 = new Timer();
-    final TimerTask task0 = new TimerTask() {
-||||||| merged common ancestors
-    Timer timer1=new Timer();
-    final TimerTask task1 = new TimerTask() {
-=======
     public static List<StoreInfo> pStoreInfo = new ArrayList<StoreInfo>();
 
     public static boolean flags_refresh = false;
@@ -73,20 +44,12 @@ public class MainActivity extends AppCompatActivity{
 
     Timer timer0=new Timer();
     final TimerTask task0 = new TimerTask() {
->>>>>>> ed7c5d6e212519d079f653b9d91edc549bd514c4
         @Override
         public void run() {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     mListView.setAdapter(mAdapter);
-<<<<<<< HEAD
-                    if (flags_refresh) {
-                        startActivity(new Intent(MainActivity.this, MainActivity.class));
-                        flags_refresh = false;
-                    }
-||||||| merged common ancestors
-=======
                     if(flags_refresh) {
                         startActivity(new Intent(MainActivity.this, MainActivity.class)
                                 .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
@@ -109,27 +72,11 @@ public class MainActivity extends AppCompatActivity{
                     }
 
                     if(!AppList.isEmpty())storageData();
->>>>>>> ed7c5d6e212519d079f653b9d91edc549bd514c4
                 }
             });
         }
     };
 
-<<<<<<< HEAD
-    public static boolean isStartAccessibilityService(Context context, String name) {
-        AccessibilityManager am = (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
-        List<AccessibilityServiceInfo> serviceInfos = am.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_GENERIC);
-        for (AccessibilityServiceInfo info : serviceInfos) {
-            ;
-            if (info.getId().contains(name)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-||||||| merged common ancestors
-=======
     public static boolean isStartAccessibilityService(Context context, String name){
         AccessibilityManager am = (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
         List<AccessibilityServiceInfo> serviceInfos = am.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_GENERIC);
@@ -141,33 +88,14 @@ public class MainActivity extends AppCompatActivity{
         } return false;
     }
 
->>>>>>> ed7c5d6e212519d079f653b9d91edc549bd514c4
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-<<<<<<< HEAD
-
-        if (!isStartAccessibilityService(this, "monitor")) {
-            Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-            startActivity(intent);
-        }
-
-        mListView =  findViewById(R.id.lv_monitor);
-        mListView.setOnItemClickListener(this);
-        if (AppList.isEmpty()) {
-            loadAppInfomation(this);
-||||||| merged common ancestors
-        mListView = (ListView) findViewById(R.id.lv_monitor);
-        mListView.setOnItemClickListener(this);
-        if (AppList.isEmpty()) {
-            loadAppInfomation(this);
-=======
         if(!isStartAccessibilityService(this,"monitor")&&AppList.isEmpty())
         {
              Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
              startActivity(intent);
->>>>>>> ed7c5d6e212519d079f653b9d91edc549bd514c4
         }
 
         mListView = findViewById(R.id.lv_monitor);
@@ -179,18 +107,11 @@ public class MainActivity extends AppCompatActivity{
 
         mApps = getSelectList(AppList);
         mAdapter = new AppAdapter(this, mApps);
-<<<<<<< HEAD
-        timer0.schedule(task0, 0, 1000);
-
-||||||| merged common ancestors
-        timer1.schedule(task1,0,1000);
-=======
         timer0.schedule(task0,0,1000);
 
         spinner = findViewById(R.id.sp_tool);
         SpAdapter=new SpinnerAdapter(this, mToolicon);
         spinner.setAdapter(SpAdapter);
->>>>>>> ed7c5d6e212519d079f653b9d91edc549bd514c4
     }
 
     private void loadAppInfomation(Context context) {
@@ -199,34 +120,13 @@ public class MainActivity extends AppCompatActivity{
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         List<ResolveInfo> infos = pm.queryIntentActivities(intent, 0);
         Collections.sort(infos, new ResolveInfo.DisplayNameComparator(pm));
-        if (infos != null) {
+        if(infos != null) {
             AppList.clear();
-<<<<<<< HEAD
-            for (int i = 0; i < infos.size(); i++) {
-                Application app = new Application();
-||||||| merged common ancestors
             for(int i=0; i<infos.size(); i++) {
-                Application app = new Application();
-=======
-            for(int i=0; i<infos.size(); i++) {
->>>>>>> ed7c5d6e212519d079f653b9d91edc549bd514c4
                 ResolveInfo info = infos.get(i);
-<<<<<<< HEAD
-                app.setName(info.loadLabel(pm).toString());
-                app.setIcon(info.loadIcon(pm));
-                app.setIntent(new ComponentName(info.activityInfo.packageName, info.activityInfo.name));
-                app.setRuntime(0);
-                app.setSelected(false);
-||||||| merged common ancestors
-                app.setName(info.loadLabel(pm).toString());
-                app.setIcon(info.loadIcon(pm));
-                app.setRuntime(0);
-                app.setSelected(false);
-=======
                 Application app = new Application(info.loadLabel(pm).toString(),info.loadIcon(pm),
                         new ComponentName(info.activityInfo.packageName, info.activityInfo.name),
                         false,0,0,"",false);
->>>>>>> ed7c5d6e212519d079f653b9d91edc549bd514c4
                 AppList.add(app);
             }
         }
@@ -234,41 +134,16 @@ public class MainActivity extends AppCompatActivity{
 
     private List<Application> getSelectList(List<Application> AppList) {
         List<Application> selectList = new ArrayList<Application>();
-        for (int i = 0; i < AppList.size(); i++) {
-            if (AppList.get(i).getSelected()) {
+        for(int i=0;i<AppList.size();i++)
+        {
+            if(AppList.get(i).getSelected())
+            {
                 selectList.add(AppList.get(i));
             }
         }
         return selectList;
     }
 
-<<<<<<< HEAD
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-    }
-
-    public void btnAdd(View view) {
-        startActivity(new Intent(MainActivity.this, Select.class));
-    }
-||||||| merged common ancestors
-    @Override
-    public void onItemClick (AdapterView<?> parent, View view, int position, long id) {
-        final int Position = position;
-        //startActivity(new Intent(MainActivity.this, Settings.class));
-        Timer timer=new Timer();
-        TimerTask task=new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mApps.get(Position).setRuntime(mApps.get(Position).getRuntime()+1);
-                    }
-                });
-            }
-        };
-        timer.schedule(task,0,1000);
-=======
     private List<StoreInfo> appToInfo(List<Application> AppList){
         pStoreInfo.clear();
         for(int i=0;i<AppList.size();i++)
@@ -330,62 +205,24 @@ public class MainActivity extends AppCompatActivity{
             e.printStackTrace();
         }
     }
->>>>>>> ed7c5d6e212519d079f653b9d91edc549bd514c4
 
-<<<<<<< HEAD
-    public void btnRenew(View view) {
-        for (int i = 0; i < mApps.size(); i++) {
-            mApps.get(i).setRuntime(0);
-            mApps.get(i).setIsRun(false);
-        }
-        mListView.setAdapter(mAdapter);
-||||||| merged common ancestors
-=======
     public void btnSpinner(View view){
         spinner.performClick();
->>>>>>> ed7c5d6e212519d079f653b9d91edc549bd514c4
     }
 
-<<<<<<< HEAD
-    public void btnAuto(View view) {
-        flags_auto = !flags_auto;
-        ImageView iv_Auto = findViewById(R.id.iv_auto);
-        if (!flags_auto) {
-            iv_Auto.setImageResource(R.drawable.auto);
-        } else {
-            iv_Auto.setImageResource(R.drawable.auto_press);
-        }
-    }
-||||||| merged common ancestors
-=======
     @Override
     public void onDestroy(){
         super.onDestroy();
 
         storageData();
     }
->>>>>>> ed7c5d6e212519d079f653b9d91edc549bd514c4
 
-<<<<<<< HEAD
-    public void btnTimer(View view) {
-        flags_timer = !flags_timer;
-        ImageView iv_Auto = findViewById(R.id.iv_timer);
-        if (!flags_timer) {
-            iv_Auto.setImageResource(R.drawable.timer);
-        } else {
-            iv_Auto.setImageResource(R.drawable.timer_press);
-        }
-||||||| merged common ancestors
-    public void btnAdd(View view){
-        startActivity(new Intent(MainActivity.this, Select.class));
-=======
     @Override
     public void finish() {
         super.finish();
         if(isTaskRoot()){
             storageData();
         }
->>>>>>> ed7c5d6e212519d079f653b9d91edc549bd514c4
     }
 }
 
