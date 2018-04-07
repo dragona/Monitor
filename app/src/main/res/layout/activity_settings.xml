@@ -75,8 +75,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="30dp"
+<<<<<<< HEAD
         android:text="" />
 
+||||||| merged common ancestors
+        android:text="Please have a rest!" />
+
+=======
+        android:text="" />
+>>>>>>> ed7c5d6e212519d079f653b9d91edc549bd514c4
     <Button
         android:id="@+id/button"
         android:layout_width="match_parent"

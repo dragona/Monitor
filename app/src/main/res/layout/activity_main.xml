@@ -12,15 +12,33 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
         android:textAlignment="center"
+||||||| merged common ancestors
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+=======
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:textAlignment="center"
+>>>>>>> ed7c5d6e212519d079f653b9d91edc549bd514c4
         android:text="APP LIST"
         android:textSize="20dp" />
 
     <ListView
         android:id="@+id/lv_monitor"
         android:layout_width="match_parent"
+<<<<<<< HEAD
         android:layout_height="410dp" />
+||||||| merged common ancestors
+        android:layout_height="412dp" />
+=======
+        android:layout_height="match_parent" />
+>>>>>>> ed7c5d6e212519d079f653b9d91edc549bd514c4
 
+<<<<<<< HEAD
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,7 +71,37 @@
             android:layout_height="wrap_content"
             android:onClick="btnTimer"
             android:src="@drawable/timer" />
+||||||| merged common ancestors
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="btnAdd"
+        app:srcCompat="@drawable/add" />
+=======
+    <Spinner
+        android:id="@+id/sp_tool"
+        android:layout_width="38dp"
+        android:layout_height="35dp"
+        android:layout_gravity="right"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="-80dp"
+        android:overlapAnchor="false" />
+>>>>>>> ed7c5d6e212519d079f653b9d91edc549bd514c4
 
+<<<<<<< HEAD
     </LinearLayout>
+||||||| merged common ancestors
+=======
+    <ImageView
+        android:id="@+id/iv_spinner"
+        android:layout_width="38dp"
+        android:layout_height="35dp"
+        android:layout_gravity="right"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="-35dp"
+        android:onClick="btnSpinner"
+        app:srcCompat="@drawable/menu" />
+>>>>>>> ed7c5d6e212519d079f653b9d91edc549bd514c4
 
 </LinearLayout>
